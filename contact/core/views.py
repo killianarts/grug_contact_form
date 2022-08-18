@@ -1,8 +1,6 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.mail import send_mail
-# from django.views.decorators.http import require_POST
-# from django.template import loader
 from .forms import ContactForm
 from django.views.generic import TemplateView
 from formtools.preview import FormPreview
@@ -34,15 +32,3 @@ class ContactDataPreview(FormPreview):
 
 class ContactSuccessView(TemplateView):
     template_name = 'success_page.html'
-
-# @require_POST
-# def submit_view(request):
-#     sender_name = contact_data['name']
-#     sender_email = form.cleaned_data['sender_email']
-#     message = form.cleaned_data['message']
-#     send_mail(f'{sender_name} - {sender_email}',
-#               message,
-#               'noreply@killianarts.online',
-#               ['contact@killianarts.online'],
-#               )
-#     return HttpResponseRedirect(reverse('contact_page'))
