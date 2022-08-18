@@ -2,6 +2,20 @@
 
 {% block content %}
     {% for field in form %}
-        {{ field }}
+        <div>
+        {{ field.label }}:
+        {{ field.value }}
+        </div>
     {% endfor %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            {{ field.as_hidden }}
+        {% endfor %}
+        <input type="hidden" name="{{ stage_field }}" value="2" />
+        <input type="hidden" name="{{ hash_field }}" value="{{ hash_value }}" />
+        <button>
+            <input type="submit" value="Send" />
+        </button>
+    </form>
 {% endblock %}
