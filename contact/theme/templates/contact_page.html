@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {{ form.as_div }}
-    <button>
-        <input type="submit" value="Confirm">
-    </button>
+    <form action="/confirm/" method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button>
+            <input type="submit" value="Confirm">
+        </button>
+    </form>
 {% endblock %}
