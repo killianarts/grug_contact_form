@@ -41,3 +41,31 @@ def send_view(request: HttpRequest) -> HttpResponse:
     if form.is_valid():
         form.send()
     return render(request, template, context)
+
+
+class ContactPageView(FormView):
+    template_name = 'contact_page.html'
+    base_template = 'contact_form_partial.html'
+    extra_context = {'base_template': base_template}
+    form = ContactForm
+
+
+class ConfirmationView(FormView):
+    template_name = 'confirmation_page.html'
+    base_template = 'contact_form_partial.html'
+    extra_context = {'base_template': base_template}
+    form = ContactForm
+
+    # def form_valid(self, form):
+    #     return super().form_valid(form)
+
+
+class SuccessView(FormView):
+    template_name = 'success_page.html'
+    base_template = 'contact_form_partial.html'
+    extra_context = {'base_template': base_template}
+    form = ContactForm
+
+    def form_valid(self, form):
+        form.send()
+        return super().form_valid(form)
