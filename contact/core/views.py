@@ -1,34 +1,45 @@
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-from django.core.mail import send_mail
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
 from .forms import ContactForm
-from django.views.generic import TemplateView
-from formtools.preview import FormPreview
+from django_htmx.middleware import HtmxDetails
+from django.views.decorators.http import require_POST
 
+class HtmxHttpRequest(HttpRequest):
+    htmx: HtmxDetails
 
-class ContactView(TemplateView):
-    template_name = 'contact_page.html'
+def contact_page_view(request: HtmxHttpRequest) -> HttpResponse:
+    template = 'contact_page.html'
+    base_template = 'contact_form_partial.html'
+    form = ContactForm()
+    context = {
+        'form': form,
+        'base_template': base_template,
+    }
+    return render(request, template, context)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = ContactForm()
-        return context
+@require_POST
+def confirmation_view(request: HtmxHttpRequest) -> HttpResponse:
+    template = 'confirmation_page.html'
+    base_template = 'contact_form_partial.html'
+    form = ContactForm(request.POST)
+    if form.is_valid():
+        context = {
+            'form': form,
+            'base_template': base_template,
+        }
+        return render(request, template, context)
 
-
-class ContactDataPreview(FormPreview):
-    preview_template = 'confirmation_page.html'
-
-    def done(self, request, cleaned_data):
-        sender_name = cleaned_data['name']
-        sender_email = cleaned_data['sender_email']
-        message = cleaned_data['message']
-        send_mail(f'{sender_name} - {sender_email}',
-                  message,
-                  'noreply@killianarts.online',
-                  ['contact@killianarts.online'],
-                  )
-        return HttpResponseRedirect(reverse('success_page'))
-
-
-class ContactSuccessView(TemplateView):
-    template_name = 'success_page.html'
+@require_POST
+def send_view(request: HtmxHttpRequest) -> HttpResponse:
+    template = 'success_page.html'
+    base_template = 'contact_form_partial.html'
+    form = ContactForm(request.POST)
+    if form.is_valid():
+        form.send()
+    else:
+        return HttpResponse("Whoops")
+    context = {
+        'form': form,
+        'base_template': base_template,
+    }
+    return render(request, template, context)

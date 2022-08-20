@@ -1,21 +1,19 @@
-{% extends 'base.html' %}
+{% extends base_template %}
+{% load static %}
 
-{% block content %}
-    {% for field in form %}
-        <div>
-        {{ field.label }}:
-        {{ field.value }}
-        </div>
-    {% endfor %}
-    <form action="" method="post">
-        {% csrf_token %}
+{% block contact_form %}
+    <form hx-post="success/"
+      hx-target="#contact-form"
+      hx-swap="outerHTML">
         {% for field in form %}
+            <div>
             {{ field.as_hidden }}
+            {{ field.label }}:
+            {{ field.value }}
+            </div>
         {% endfor %}
-        <input type="hidden" name="{{ stage_field }}" value="2" />
-        <input type="hidden" name="{{ hash_field }}" value="{{ hash_value }}" />
-        <button>
-            <input type="submit" value="Send" />
+        <button type="submit">
+            Send
         </button>
     </form>
 {% endblock %}

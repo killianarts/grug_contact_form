@@ -11,12 +11,14 @@
 
 		{% tailwind_css %}
         <script src="https://unpkg.com/hyperscript.org@0.9.7"></script>
-        <script src="{% static 'htmx.min.js' %}" defer></script>
+        <script src="{% static 'core/htmx.min.js' %}" defer></script>
 	</head>
 
-	<body class="bg-gray-50 font-serif leading-normal tracking-normal">
+	<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+          class="bg-gray-50 font-serif leading-normal tracking-normal">
 		<main>
             {% block content %}{% endblock %}
         </main>
+    {% django_htmx_script %}
 	</body>
 </html>
