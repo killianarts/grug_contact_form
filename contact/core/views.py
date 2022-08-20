@@ -1,10 +1,8 @@
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-from django.core.mail import send_mail
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
 from .forms import ContactForm
-from django.views.generic import TemplateView
-from formtools.preview import FormPreview
-
+from django_htmx.middleware import HtmxDetails
+from django.views.decorators.http import require_POST
 
 class ContactView(TemplateView):
     template_name = 'contact_page.html'
