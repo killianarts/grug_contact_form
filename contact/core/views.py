@@ -2,6 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from .forms import ContactForm
 from django.views.decorators.http import require_POST
+from django.views.generic import FormView
 
 
 def contact_page_view(request: HttpRequest) -> HttpResponse:
