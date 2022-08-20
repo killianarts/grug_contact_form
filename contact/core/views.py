@@ -4,8 +4,8 @@ from .forms import ContactForm
 from django_htmx.middleware import HtmxDetails
 from django.views.decorators.http import require_POST
 
-class ContactView(TemplateView):
-    template_name = 'contact_page.html'
+class HtmxHttpRequest(HttpRequest):
+    htmx: HtmxDetails
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
