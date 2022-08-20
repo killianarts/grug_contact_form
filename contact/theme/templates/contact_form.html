@@ -1,0 +1,12 @@
+{% extends base_template %}
+
+{% block contact_form %}
+    <form hx-post="confirm/"
+          hx-target="#contact-form"
+          hx-swap="outerHTML">
+        {{ form.as_div }}
+        <button type="submit">
+            Confirm
+        </button>
+    </form>
+{% endblock %}

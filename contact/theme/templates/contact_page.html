@@ -1,11 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-    <form action="/confirm/" method="post">
-        {% csrf_token %}
-        {{ form.as_div }}
-        <button>
-            <input type="submit" value="Confirm">
-        </button>
-    </form>
+    {% include 'contact_form.html' %}
 {% endblock %}
