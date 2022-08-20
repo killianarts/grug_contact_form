@@ -26,10 +26,6 @@ def confirmation_view(request: HttpRequest) -> HttpResponse:
         'base_template': base_template,
     }
     if form.is_valid():
-        context = {
-            'form': form,
-            'base_template': base_template,
-        }
         return render(request, template, context)
 
 
