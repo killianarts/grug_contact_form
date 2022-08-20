@@ -1,11 +1,8 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from .forms import ContactForm
-from django_htmx.middleware import HtmxDetails
 from django.views.decorators.http import require_POST
 
-class HtmxHttpRequest(HttpRequest):
-    htmx: HtmxDetails
 
 def contact_page_view(request: HtmxHttpRequest) -> HttpResponse:
     template = 'contact_page.html'
