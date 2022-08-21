@@ -47,25 +47,27 @@ class ContactPageView(FormView):
     template_name = 'contact_page.html'
     base_template = 'contact_form_partial.html'
     extra_context = {'base_template': base_template}
-    form = ContactForm
+    form_class = ContactForm
+    success_url = '/confirm/'
 
 
 class ConfirmationView(FormView):
     template_name = 'confirmation_page.html'
     base_template = 'contact_form_partial.html'
     extra_context = {'base_template': base_template}
-    form = ContactForm
+    form_class = ContactForm
+    success_url = '/success/'
 
-    # def form_valid(self, form):
-    #     return super().form_valid(form)
+    def post(self, request, *args, **kwargs):
+        return render(self.request, self.template_name, self.get_context_data())
 
 
 class SuccessView(FormView):
     template_name = 'success_page.html'
     base_template = 'contact_form_partial.html'
     extra_context = {'base_template': base_template}
-    form = ContactForm
+    form_class = ContactForm
 
     def form_valid(self, form):
         form.send()
-        return super().form_valid(form)
+        return render(self.request, self.template_name, self.get_context_data())
