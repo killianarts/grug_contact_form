@@ -2,6 +2,7 @@
 
 {% block contact_form %}
     <form>
+        {% csrf_token %}
         {{ form.as_div }}
         <button hx-post="confirm/"
                 hx-target="#contact-form"
