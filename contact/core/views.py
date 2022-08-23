@@ -57,18 +57,26 @@ class ConfirmationView(FormView):
     base_template = 'contact_form_partial.html'
     extra_context = {'base_template': base_template}
     form_class = ContactForm
+    submit = False
     success_url = '/success/'
 
     def post(self, request, *args, **kwargs):
+        if self.submit is True:
+            return self.validate_form()
         return render(self.request, self.template_name, self.get_context_data())
 
-
-class SuccessView(FormView):
-    template_name = 'success_page.html'
-    base_template = 'contact_form_partial.html'
-    extra_context = {'base_template': base_template}
-    form_class = ContactForm
+    def validate_form(self):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            return self.form_valid(form)
 
     def form_valid(self, form):
         form.send()
-        return render(self.request, self.template_name, self.get_context_data())
+        return redirect(self.success_url)
+
+
+class SuccessView(TemplateView):
+    template_name = 'success_page.html'
+    base_template = 'contact_form_partial.html'
+    extra_context = {'base_template': base_template}
