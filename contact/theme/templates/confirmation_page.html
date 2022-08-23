@@ -1,10 +1,7 @@
 {% extends base_template %}
-{% load static %}
 
 {% block contact_form %}
-    <form hx-post="success/"
-      hx-target="#contact-form"
-      hx-swap="outerHTML">
+    <form>
         {% for field in form %}
             <div>
             {{ field.as_hidden }}
@@ -12,7 +9,10 @@
             {{ field.value }}
             </div>
         {% endfor %}
-        <button type="submit">
+        <button hx-post="send/"
+                hx-target="#contact-form"
+                hx-swap="outerHTML"
+                type="submit">
             Send
         </button>
     </form>
