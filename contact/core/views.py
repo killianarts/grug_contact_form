@@ -51,6 +51,9 @@ class ContactPageView(FormView):
     form_class = ContactForm
     success_url = '/confirm/'
 
+    def post(self, request, *args, **kwargs):
+        return render(self.request, self.template_name, self.get_context_data())
+
 
 class ConfirmationView(FormView):
     template_name = 'confirmation_page.html'
