@@ -42,6 +42,9 @@ module.exports = {
         // '../../**/*.py'
     ],
     theme: {
+        fontFamily: {
+                'brains': ['"JetBrains Mono"'],
+            },
         extend: {},
     },
     plugins: [
