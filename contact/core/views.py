@@ -64,15 +64,14 @@ class ConfirmationView(FormView):
     success_url = '/success/'
 
     def post(self, request, *args, **kwargs):
-        if self.submit is True:
-            return self.validate_form()
-        return render(self.request, self.template_name, self.get_context_data())
-
-    def validate_form(self):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         if form.is_valid():
-            return self.form_valid(form)
+            if self.submit is False:
+                return render(self.request, self.template_name, self.get_context_data())
+            if self.submit is True:
+                return self.form_valid(form)
+        return render(self.request, 'contact_form.html', self.get_context_data())
 
     def form_valid(self, form):
         form.send()
