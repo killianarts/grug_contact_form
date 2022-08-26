@@ -5,7 +5,7 @@
 {% block contact_form %}
     <form class="container mx-auto pt-10 px-5 max-w-3xl grid grid-cols-1 gap-10 text-slate-900">
     {% csrf_token %}
-        <h3 class="mx-auto text-center text-3xl sm:text-5xl font-thin">
+        <h3 class="mx-auto text-center text-3xl font-thin">
             Please Confirm
         </h3>
         {{ form.non_field_errors }}
@@ -13,9 +13,9 @@
             <div class="w-full">
                 <label for="{{ field.id_for_label }}"
                        class="text-2xl">
-                    {% render_field field class="w-full bg-slate-100 border-2 border-slate-100 focus:ring-0 focus:outline-0 focus:border-slate-200 hidden" %}
+                    {{ field.as_hidden }}
                     <p class="max-w-fit font-bold text-cyan-600 pb-2">{{ field.label }}: </p>
-                    <span class="">{{ field.value }}</span>
+                    <span>{{ field.value }}</span>
                 </label>
             </div>
         {% endfor %}
@@ -33,7 +33,7 @@
             </button>
         </div>
 
-        <div id="indicator" class="htmx-indicator mx-auto">
+        <div id="indicator" class="hidden mx-auto">
             <svg version="1.1" id="L4" class="fill-cyan-500 mx-auto"
                  xmlns="http://www.w3.org/2000/svg"
                  x="0px"
