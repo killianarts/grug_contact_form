@@ -1,0 +1,10 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <h1 class="text-center font-bold text-5xl mt-10">Contact Form</h1>
+    {% block contact_form %}
+        <div id="contact-form">
+            {% include 'core/form/contact_form.html' %}
+        </div>
+    {% endblock %}
+{% endblock %}

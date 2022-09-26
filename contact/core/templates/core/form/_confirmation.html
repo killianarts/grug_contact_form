@@ -1,0 +1,76 @@
+{% load widget_tweaks %}
+
+{% block contact_form %}
+    <form class="container mx-auto pt-10 px-5 max-w-3xl grid grid-cols-1 gap-10 text-slate-900">
+        {% csrf_token %}
+        <h3 class="mx-auto text-center text-3xl font-thin">
+            Please Confirm
+        </h3>
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div class="w-full">
+                <label for="{{ field.id_for_label }}"
+                       class="text-2xl">
+                    {{ field.as_hidden }}
+                    <p class="max-w-fit font-bold text-cyan-600 pb-2">{{ field.label }}: </p>
+                    <span>{{ field.value }}</span>
+                </label>
+            </div>
+        {% endfor %}
+        <div id="buttons" class="flex flex-wrap justify-center gap-10">
+            <button hx-target="#contact-form" hx-swap="innerHTML"
+                    hx-post="send/"
+                    _="on click toggle .hidden on #indicator then remove #buttons"
+                    class="max-w-fit px-14 py-4 bg-cyan-600 text-slate-100 text-2xl transition ease-in-out duration-300 hover:bg-cyan-600 cursor-pointer">
+                Send
+            </button>
+            <button hx-target="#contact-form" hx-swap="innerHTML"
+                    hx-post="/"
+                    class="max-w-fit px-14 py-4 bg-slate-900 text-slate-100 text-2xl transition ease-in-out duration-300 hover:bg-slate-700 cursor-pointer">
+                Edit
+            </button>
+        </div>
+
+        {% if error %}
+            {{ error }}
+        {% endif %}
+
+        <div id="indicator" class="hidden mx-auto">
+            <svg id="L4" class="fill-cyan-500 mx-auto"
+                 xmlns="http://www.w3.org/2000/svg"
+                 x="0px"
+                 y="0px"
+                 viewBox="0 0 150 100" xml:space="preserve"
+                 width="150px">
+                    <circle stroke="none" cx="50" cy="50" r="6">
+                        <animate
+                                attributeName="opacity"
+                                dur="1s"
+                                values="0;1;0"
+                                repeatCount="indefinite"
+                                begin="0.1">
+
+                        </animate>
+                    </circle>
+                <circle stroke="none" cx="75" cy="50" r="6">
+                        <animate
+                                attributeName="opacity"
+                                dur="1s"
+                                values="0;1;0"
+                                repeatCount="indefinite"
+                                begin="0.2">
+                        </animate>
+                    </circle>
+                <circle stroke="none" cx="100" cy="50" r="6">
+                        <animate
+                                attributeName="opacity"
+                                dur="1s"
+                                values="0;1;0"
+                                repeatCount="indefinite"
+                                begin="0.3">
+                        </animate>
+                    </circle>
+                </svg>
+        </div>
+    </form>
+{% endblock %}
