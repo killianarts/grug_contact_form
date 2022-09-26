@@ -1,15 +1,10 @@
 from django.urls import path
 from . import views
 
-# urlpatterns = [
-#     path('', views.contact_page_view, name='contact_page'),
-#     path('confirm/', views.confirmation_view),
-#     path('send/', views.send_view)
-# ]
+app_name = "core"
 
 urlpatterns = [
-    path('', views.ContactPageView.as_view(), name='contact_page'),
-    path('confirm/', views.ConfirmationView.as_view()),
-    path('send/', views.ConfirmationView.as_view(submit=True)),
-    path('success/', views.SuccessView.as_view())
+    path('', views.contact_page, name='contact_page'),
+    path('confirm/', views.validate_then_confirm),
+    path('send/', views.send_form)
 ]

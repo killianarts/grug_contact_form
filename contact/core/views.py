@@ -2,83 +2,44 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from .forms import ContactForm
 from django.views.decorators.http import require_POST
-from django.views.generic import FormView, TemplateView
-from django.shortcuts import redirect
+from render_block import render_block_to_string
+from smtplib import SMTPException
 
 
-def contact_page_view(request: HttpRequest) -> HttpResponse:
-    template = 'contact_page.html'
-    base_template = 'contact_form_partial.html'
+def contact_page(request: HttpRequest) -> HttpResponse:
+    if request.POST:
+        form = ContactForm(request.POST)
+        context = {'form': form}
+        block = 'contact_form'
+        html = render_block_to_string("core/contact_page.html", block, context)
+        return HttpResponse(html)
     form = ContactForm()
-    context = {
-        'form': form,
-        'base_template': base_template,
-    }
-    return render(request, template, context)
+    context = {'form': form}
+    return render(request, 'core/contact_page.html', context)
 
 
 @require_POST
-def confirmation_view(request: HttpRequest) -> HttpResponse:
-    template = 'confirmation_page.html'
-    base_template = 'contact_form_partial.html'
+def validate_then_confirm(request: HttpRequest) -> HttpResponse:
+    block = 'contact_form'
     form = ContactForm(request.POST)
-    context = {
-        'form': form,
-        'base_template': base_template,
-    }
+    context = {'form': form}
     if form.is_valid():
-        return render(request, template, context)
+        html = render_block_to_string('core/form/_confirmation.html', block, context)
+        return HttpResponse(html)
+    return contact_page(request)
 
 
 @require_POST
-def send_view(request: HttpRequest) -> HttpResponse:
-    template = 'success_page.html'
-    base_template = 'contact_form_partial.html'
+def send_form(request: HttpRequest) -> HttpResponse:
+    block = 'contact_form'
     form = ContactForm(request.POST)
-    context = {
-        'form': form,
-        'base_template': base_template,
-    }
+    context = {'form': form}
+    html = render_block_to_string('core/form/_send.html', block, context)
     if form.is_valid():
-        form.send()
-    return render(request, template, context)
-
-
-class ContactPageView(FormView):
-    template_name = 'contact_page.html'
-    base_template = 'contact_form_partial.html'
-    extra_context = {'base_template': base_template}
-    form_class = ContactForm
-    success_url = '/confirm/'
-
-    def post(self, request, *args, **kwargs):
-        return render(self.request, self.template_name, self.get_context_data())
-
-
-class ConfirmationView(FormView):
-    template_name = 'confirmation_page.html'
-    base_template = 'contact_form_partial.html'
-    extra_context = {'base_template': base_template}
-    form_class = ContactForm
-    submit = False
-    success_url = '/success/'
-
-    def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        if form.is_valid():
-            if self.submit is False:
-                return render(self.request, self.template_name, self.get_context_data())
-            if self.submit is True:
-                return self.form_valid(form)
-        return render(self.request, 'contact_form.html', self.get_context_data())
-
-    def form_valid(self, form):
-        form.send()
-        return redirect(self.success_url)
-
-
-class SuccessView(TemplateView):
-    template_name = 'success_page.html'
-    base_template = 'contact_form_partial.html'
-    extra_context = {'base_template': base_template}
+        try:
+            form.send()
+        except SMTPException as error:
+            context += {
+                'error': error
+            }
+    return HttpResponse(html)
