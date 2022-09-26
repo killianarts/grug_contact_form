@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'theme',
     'django_browser_reload',
-    'formtools'
+    'render_block'
 ]
 
 TAILWIND_APP_NAME = 'theme'
@@ -67,7 +67,7 @@ ROOT_URLCONF = 'contact.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
