@@ -21,7 +21,7 @@ This guide will provide an overview of how to build a simple HDA--a contact form
 
 ## Github
 
-If you want to skip to the good parts, go to the [Github repo](https://github.com/mijokijo/grug_contact_form) for this
+If you want to skip to the good parts, go to the [Github repo](https://github.com/killianarts/grug_contact_form) for this
 project. This guide only covers the key points in the application.
 
 ## Guide
