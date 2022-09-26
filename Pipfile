@@ -9,6 +9,7 @@ django-htmx = "*"
 django-widget-tweaks = "*"
 django-tailwind = "*"
 django-formtools = "*"
+django-render-block = "*"
 
 [dev-packages]
 
